@@ -4,22 +4,27 @@ const httpServer = http.createServer(handleServer);
 
 
 function handleServer(req, res) {
-   httpServer.post('/welcome', (req,res)=>{
-        res.status(200).send("Welcome to Dominos!");
-        
-        
-    }); 
-    httpServer.post('/contact', (req,res)=>{
-        const application = {
-            "phone": '18602100000',
-            "email": 'guestcaredominos@jublfood.com'
-        }
-        res.status(200).send(application);
-        
-    }); 
-    res.status(404);
+  if(req.url ==="/welcome")
+    {   
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.write("Welcome to Dominos!");
+        res.end();
+    } 
+    else if(req.url ==="/contact")
+    {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.write(JSON.stringify({
+            phone: '18602100000',
+            email: 'guestcaredominos@jublfood.com'
+            }));
+        res.end();
+    }
+    else{
+        res.writeHead(404, {'Content-Type': 'text/html'});
+        res.end("404 Not Found");
   
 }
-
-module.exports = httpServer;
 httpServer.listen(8081);
+module.exports = httpServer;
+   
+
